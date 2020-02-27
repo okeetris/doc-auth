@@ -27,13 +27,18 @@ This will start the program on port 8080.
  
 #### Get Document
 
-#####Request
+##### Request
   
  ```GET /document?uid=<uid>&file=<file name>```
  
- #####Response
+##### Response
  
 ```https://<example pre-signed url>```
+
+##### Error's
+
+If the document requested does not exist, a 404 Not Found is returned.
+If the UID does not match the UID of the requested document, a 403 Forbidden is returned.
 
 ## Deployment
 
