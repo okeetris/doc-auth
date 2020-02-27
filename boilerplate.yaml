@@ -15,6 +15,42 @@ spec:
       containers:
         - name: auth-service
           image: uk.icr.io/ix-liberty/auth-service
+          env:
+            - name: EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: expiration
+            - name: API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: apiKey
+            - name: SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: secretKey
+            - name: BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: bucketName
+            - name: ENDPOINT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: endpointURL
+            - name: IAM_ENPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: iamEndpoint
+            - name: LOCATION
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-auth
+                  key: location
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

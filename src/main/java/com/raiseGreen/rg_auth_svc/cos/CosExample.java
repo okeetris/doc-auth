@@ -10,26 +10,38 @@ import com.ibm.cloud.objectstorage.services.s3.AmazonS3ClientBuilder;
 import com.ibm.cloud.objectstorage.services.s3.model.*;
 import com.raiseGreen.rg_auth_svc.errorHandlers.DocNotFoundException;
 import com.raiseGreen.rg_auth_svc.errorHandlers.UidNotFoundException;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Map;
+
 
 public class CosExample
 {
 
     private static AmazonS3 _cosClient;
 
-    public static String bucketName = "rg-doc-store";  // eg my-unique-bucket-name
+    //public static String bucketName = "rg-doc-store";  // eg my-unique-bucket-name
 
     public static String api_key = "afXmk5DPElbIQEDue8UwcUaJyFp4Vf1VpxD_FL28Dvvs"; // eg "W00YiRnLW4k3fTjMB-oiB-2ySfTrFBIQQWanc--P3byk"
     public static String service_instance_id = "crn:v1:bluemix:public:cloud-object-storage:global:a/1a3800d393bc426c8202f7adb10ce7b0:222c580a-323a-41b3-a564-cef976bd2d0b:bucket:rg-doc-store"; // eg "crn:v1:bluemix:public:cloud-object-storage:global:a/3bf0d9003abfb5d29761c3e97696b71c:d6f04d83-6c4f-4a62-a165-696756d63903::"
-    public static String endpoint_url = "https://s3.eu-gb.cloud-object-storage.appdomain.cloud"; // this could be any service endpoint
+    //public static String endpoint_url = "https://s3.eu-gb.cloud-object-storage.appdomain.cloud"; // this could be any service endpoint
 
     public static String storageClass = "eu-gb-standard";
-    public static String location = "eu-gb";
+    //public static String location = "eu-gb";
 
     public static String resultUrl;
+
+    //Config map data
+    public static String expirationMilli = System.getenv().get("EXPIRATION");
+    public static String bucketName = System.getenv().get("BUCKET_NAME");
+    public static String endpoint_url = System.getenv().get("ENDPOINT_URL");
+    public static String location = System.getenv().get("LOCATION");
+    public static String iAMEndpoint = System.getenv().get("IAM_ENDPOINT");
+    public static String aPIKey = System.getenv().get("API_KEY");
+    public static String secretKey = System.getenv().get("SECRET_KEY");
+
 
     /**
      * @param args
@@ -37,7 +49,7 @@ public class CosExample
     public static void main(String[] args)
     {
 
-        SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.cloud.ibm.com/identity/token";
+        SDKGlobalConfiguration.IAM_ENDPOINT = iAMEndpoint;
 
         System.out.println("Current time: " + new Timestamp(System.currentTimeMillis()).toString());
         _cosClient = createClient();
@@ -59,8 +71,8 @@ public class CosExample
         //credentials = new BasicIBMOAuthCredentials(api_key, service_instance_id);
 
         credentials = new BasicAWSCredentials(
-                "41ccb967b38d4b97a1c26437ca2dc560",
-                "0e2775f18559852d60fecdd315045e123ca61a9a1d95b512"
+                aPIKey,
+                secretKey
         );
 
         ClientConfiguration clientConfig = new ClientConfiguration().withRequestTimeout(5000);
@@ -79,13 +91,15 @@ public class CosExample
         AmazonS3 cosClient = createClient();
         boolean result = checkReqUid(uid, cosClient, fileName);
 
+        //Config map pull variable
+
         //if (result) {
             try {
 
                 // Set the presigned URL to expire after one min.
                 java.util.Date expiration = new java.util.Date();
                 long expTimeMillis = expiration.getTime();
-                expTimeMillis += 1000 * 60;
+                expTimeMillis += 1000 * 60 * Long.parseLong(expirationMilli);
                 expiration.setTime(expTimeMillis);
 
                 System.out.println("Generating pre-signed URL.");
