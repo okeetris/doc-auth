@@ -8,6 +8,7 @@ import com.ibm.cloud.objectstorage.client.builder.AwsClientBuilder.EndpointConfi
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3;
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3ClientBuilder;
 import com.ibm.cloud.objectstorage.services.s3.model.*;
+import com.raiseGreen.rg_auth_svc.errorHandlers.DocNotFoundException;
 import com.raiseGreen.rg_auth_svc.errorHandlers.UidNotFoundException;
 
 import java.net.URL;
@@ -37,15 +38,6 @@ public class CosExample
     {
 
         SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.cloud.ibm.com/identity/token";
-
-
-        String newBucketName = "test"; // eg my-other-unique-bucket-name
-
-
-        AWSCredentials credentials = new BasicAWSCredentials(
-                "41ccb967b38d4b97a1c26437ca2dc560",
-                "0e2775f18559852d60fecdd315045e123ca61a9a1d95b512"
-        );
 
         System.out.println("Current time: " + new Timestamp(System.currentTimeMillis()).toString());
         _cosClient = createClient();
@@ -87,7 +79,7 @@ public class CosExample
         AmazonS3 cosClient = createClient();
         boolean result = checkReqUid(uid, cosClient, fileName);
 
-        if (result) {
+        //if (result) {
             try {
 
                 // Set the presigned URL to expire after one min.
@@ -108,7 +100,7 @@ public class CosExample
                 // System.out.println("Pre-Signed URL: " + url.toString());
 
 
-            } catch (SdkClientException e) {
+            } catch (Exception e) {
                 // The call was transmitted successfully, but Amazon S3 couldn't process
                 // it, so it returned an error response.
                 e.printStackTrace();
@@ -116,23 +108,33 @@ public class CosExample
 
             return resultUrl;
             //add test
-        } else {
+        /*} else {
             //TODO: return error depending on comparison
             throw new UidNotFoundException("uid: "+uid+ " does not match the requested document" );
             //throw org.springframework.security.access.AccessDeniedException("403 returned");
-        }
+        }*/
     }
 
     public static boolean checkReqUid(String uid, AmazonS3 _cosClient, String fileName){
+        String reqUid = "";
 
-        ObjectMetadata test = _cosClient.getObjectMetadata(bucketName,  fileName);
-        Map<String, String> test2 = test.getUserMetadata();
+        try {
 
-        String reqUid = test2.get("uid");
+            ObjectMetadata test = _cosClient.getObjectMetadata(bucketName, fileName);
+            Map<String, String> test2 = test.getUserMetadata();
+            reqUid = test2.get("uid");
+        }
+        catch (AmazonS3Exception e ){
+            e.printStackTrace();
+            throw new DocNotFoundException("Document:" + fileName + " does not match any documents availible");
+        }
 
-        return reqUid.equals(uid);
-        //TODO: Change key to uid value
-        //TODO: compare uid to entered value
+        if (reqUid.equals(uid)){
+            return true;
+        } else {
+            throw new UidNotFoundException("uid: "+uid+ " does not match the requested document" );
+        }
+
     }
 
 /*

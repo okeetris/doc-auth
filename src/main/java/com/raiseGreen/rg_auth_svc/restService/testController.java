@@ -10,18 +10,13 @@ public class testController {
 
 
     @GetMapping("/document")
-    public String greeting( @RequestParam(value= "uid", defaultValue = "") String uid) {
-        System.out.println(uid);
-        String result = CosExample.getPreUrl("mou-20200221170307-8f2QnFhk.pdf", uid);
-        //System.out.println(uid);
-        System.out.println(result);
-        return result;
+    public String greeting( @RequestParam(value= "uid", defaultValue = "") String uid, @RequestParam(value="file") String fileName) {
+        return CosExample.getPreUrl(fileName, uid);
     }
 
     @GetMapping("/test")
     public String test(){
         System.out.println("Working");
-
         return "working";
     }
 }
