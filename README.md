@@ -37,8 +37,13 @@ This will start the program on port 8080.
 
 ##### Error's
 
-If the document requested does not exist, a 404 Not Found is returned.
-If the UID does not match the UID of the requested document, a 403 Forbidden is returned.
+If the document requested does not exist, a ```404 Not Found``` is returned.
+If the UID does not match the UID of the requested document, a ```403 Forbidden``` is returned.
+
+##### Expiration
+
+By default the pre-signed url is  set to expire after 1 min, this can be changed via a config map called ```spring-boot-auth``` with a key of ```expiration```.
+All other ENV variables are in a config map owned by the team and will not be placed in a repo. If a new config map is created it needs to match the variables within ```boilerplate.yaml```
 
 ## Deployment
 
@@ -52,7 +57,7 @@ How to deploy this app
 
 Service will be running on ```http://localhost:8080/```
 
-### Deploy to openshift
+### Deploy to Openshift
 
 Build docker image.
 ``` docker build . -t uk.icr.io/ix-liberty/auth-service```
