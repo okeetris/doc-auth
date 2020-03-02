@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: spring-boot-auth
+data:
+  expiration: "1" # Expiration time in minutes
+  apiKey: <API_KEY> # API key of bucket
+  secretKey: <SECRET_KEY> # Secret key of bucket
+  bucketName: <BUCKET_NAME> # Bucket Name
+  endpointURL: https://s3.eu-gb.cloud-object-storage.appdomain.cloud
+  location: eu-gb
+  iamEndpoint: https://iam.cloud.ibm.com/identity/token
