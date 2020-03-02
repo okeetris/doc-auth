@@ -8,19 +8,23 @@ import com.ibm.cloud.objectstorage.client.builder.AwsClientBuilder.EndpointConfi
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3;
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3ClientBuilder;
 import com.ibm.cloud.objectstorage.services.s3.model.*;
+import com.raiseGreen.rg_auth_svc.ConfigSwitch;
 import com.raiseGreen.rg_auth_svc.errorHandlers.DocNotFoundException;
 import com.raiseGreen.rg_auth_svc.errorHandlers.UidNotFoundException;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.raiseGreen.rg_auth_svc.errorHandlers.UidNotPresentException;
 
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Map;
+
+import static com.raiseGreen.rg_auth_svc.ConfigSwitch.*;
 
 
 public class CosExample
 {
 
     private static AmazonS3 _cosClient;
+    public static String source;
 
     //public static String bucketName = "rg-doc-store";  // eg my-unique-bucket-name
 
@@ -34,14 +38,36 @@ public class CosExample
     public static String resultUrl;
 
     //Config map data
-    public static String expirationMilli = System.getenv().get("EXPIRATION");
-    public static String bucketName = System.getenv().get("BUCKET_NAME");
-    public static String endpoint_url = System.getenv().get("ENDPOINT_URL");
-    public static String location = System.getenv().get("LOCATION");
-    public static String iAMEndpoint = System.getenv().get("IAM_ENDPOINT");
-    public static String aPIKey = System.getenv().get("API_KEY");
-    public static String secretKey = System.getenv().get("SECRET_KEY");
+    /*public static String expirationMilli;
+    public static String bucketName;
+    public static String endpoint_url;
+    public static String location;
+    public static String iAMEndpoint;
+    public static String apiKey;
+    public static String secretKey;*/
 
+
+    /*public static void source(Boolean store) {
+
+        System.out.println(store);
+        if (store) {
+            expirationMilli = System.getenv().get("EXPIRATION");
+            bucketName = System.getenv().get("BUCKET_NAME");
+            endpoint_url = System.getenv().get("ENDPOINT_URL");
+            location = System.getenv().get("LOCATION");
+            iAMEndpoint = System.getenv().get("IAM_ENDPOINT");
+            apiKey = System.getenv().get("API_KEY");
+            secretKey = System.getenv().get("SECRET_KEY");
+        } else {
+            expirationMilli = "1";
+            bucketName = "rg-doc-store";
+            endpoint_url = "https://s3.eu-gb.cloud-object-storage.appdomain.cloud";
+            location = "eu-gb";
+            iAMEndpoint = "https://iam.cloud.ibm.com/identity/token";
+            apiKey = "afXmk5DPElbIQEDue8UwcUaJyFp4Vf1VpxD_FL28Dvvs";
+            secretKey = "0e2775f18559852d60fecdd315045e123ca61a9a1d95b512";
+        }*/
+    //}
 
     /**
      * @param args
@@ -71,17 +97,16 @@ public class CosExample
         //credentials = new BasicIBMOAuthCredentials(api_key, service_instance_id);
 
         credentials = new BasicAWSCredentials(
-                aPIKey,
+                apiKey,
                 secretKey
         );
 
         ClientConfiguration clientConfig = new ClientConfiguration().withRequestTimeout(5000);
         clientConfig.setUseTcpKeepAlive(true);
 
-        AmazonS3 cosClient = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+        return AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(new EndpointConfiguration(endpoint_url, location)).withPathStyleAccessEnabled(true)
                 .withClientConfiguration(clientConfig).build();
-        return cosClient;
     }
 
 
@@ -130,7 +155,7 @@ public class CosExample
     }
 
     public static boolean checkReqUid(String uid, AmazonS3 _cosClient, String fileName){
-        String reqUid = "";
+        String reqUid;
 
         try {
 
@@ -140,13 +165,18 @@ public class CosExample
         }
         catch (AmazonS3Exception e ){
             e.printStackTrace();
-            throw new DocNotFoundException("Document:" + fileName + " does not match any documents availible");
+            throw new DocNotFoundException("Document" + fileName + " does not match any documents availible");
+        }
+
+        //TODO: null
+        if (reqUid == null){
+            throw new UidNotPresentException("This document does not have any meta-data");
         }
 
         if (reqUid.equals(uid)){
             return true;
         } else {
-            throw new UidNotFoundException("uid: "+uid+ " does not match the requested document" );
+            throw new UidNotFoundException("uid "+uid+ " does not match the requested document" );
         }
 
     }

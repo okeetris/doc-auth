@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: uk.icr.io/ix-liberty/auth-service
+          image: <registry_tag>/auth-service
           env:
             - name: EXPIRATION
               valueFrom:

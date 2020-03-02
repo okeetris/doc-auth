@@ -6,7 +6,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-This project runs on Spring ```2.2.4```, java ```1.8``` and ibm cos sdk ```2.6.1```
+This project runs on Spring ```2.2.4```, java ```1.8``` and ibm cos sdk ```2.6.1```.
+
+### Configuration
+
+This program can run locally or hosted on Openshift. 
+To switch between the two change the variable ```source``` int ```restService/AuthRestController```. 
+
+False = Local
+
+True = Hosted
+
+To run hosted the program must have a config map associated with it. 
 
 ### Installing
 
@@ -60,7 +71,7 @@ Service will be running on ```http://localhost:8080/```
 ### Deploy to Openshift
 
 Build docker image.
-``` docker build . -t uk.icr.io/ix-liberty/auth-service```
+``` docker build . -t <registry_tag>/auth-service```
 
 Push image to container registry.
 

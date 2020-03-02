@@ -8,6 +8,6 @@ data:
   apiKey: <API_KEY> # API key of bucket
   secretKey: <SECRET_KEY> # Secret key of bucket
   bucketName: <BUCKET_NAME> # Bucket Name
-  endpointURL: https://s3.eu-gb.cloud-object-storage.appdomain.cloud
-  location: eu-gb
-  iamEndpoint: https://iam.cloud.ibm.com/identity/token
+  endpointURL: <ENDPOINT_URL> # e.g. https://s3.eu-gb.cloud-object-storage.appdomain.cloud
+  location: <LOCATION> # e.g. eu-gb
+  iamEndpoint: <IAMENDPOINT> # e.g. https://iam.cloud.ibm.com/identity/token
