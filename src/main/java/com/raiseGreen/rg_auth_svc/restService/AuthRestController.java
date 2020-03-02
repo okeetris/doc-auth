@@ -13,6 +13,7 @@ public class AuthRestController {
 
     @GetMapping("/document")
     public String greeting( @RequestParam(value= "uid", defaultValue = "") String uid, @RequestParam(value="file") String fileName) {
+
         //Change this depending on local vs hosted with config map. Hosted = true, local = false.
         ConfigSwitch.source(source);
         return CosExample.getPreUrl(fileName, uid);
