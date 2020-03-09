@@ -15,6 +15,7 @@ public class AuthRestController {
     public String greeting( @RequestParam(value= "uid", defaultValue = "") String uid, @RequestParam(value="file") String fileName) {
 
         //Change this depending on local vs hosted with config map. Hosted = true, local = false.
+        //System.out.print(System.getProperty("catalina.base"));
         ConfigSwitch.source(source);
         return CosExample.getPreUrl(fileName, uid);
     }
