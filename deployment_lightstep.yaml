@@ -13,8 +13,31 @@ spec:
         app: auth-service
     spec:
       containers:
+        - name: jaeger-agent
+          image: jaegertracing/jaeger-agent:1.17.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5775
+              name: zk-compact-trft
+              protocol: UDP
+            - containerPort: 5778
+              name: config-rest
+              protocol: TCP
+            - containerPort: 6831
+              name: jg-compact-trft
+              protocol: UDP
+            - containerPort: 6832
+              name: jg-binary-trft
+              protocol: UDP
+            - containerPort: 14271
+              name: admin-http
+              protocol: TCP
+          args:
+            - --reporter.grpc.host-port=ingest.lightstep.com:443
+            - --reporter.grpc.tls=true
+            - --jaeger.tags=access_token=xbHE2HCGcxI4BBAQT0gIaODyi4/yebQKPosLmolsXzBJw0w0VXQMQYheZHqxSAcVJI2X9wCzAZszjZXganqIAo3rb3yI0F6KeHJEzw87
         - name: auth-service
-          image: <registry_tag>/auth-service
+          image: uk.icr.io/ix-liberty-rhg/auth-service
           env:
             - name: EXPIRATION
               valueFrom:
