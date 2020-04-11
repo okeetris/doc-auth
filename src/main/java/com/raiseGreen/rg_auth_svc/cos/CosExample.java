@@ -93,7 +93,7 @@ public class CosExample
 
     }
 
-    public static boolean checkReqUid(String uid, AmazonS3 _cosClient, String fileName){
+    public static void checkReqUid(String uid, AmazonS3 _cosClient, String fileName){
         String reqUid;
 
         try {
@@ -103,19 +103,15 @@ public class CosExample
             reqUid = test2.get("uid");
         }
         catch (AmazonS3Exception e ){
-            e.printStackTrace();
             throw new DocNotFoundException("Document" + fileName + " does not match any documents availible");
         }
 
         if (reqUid == null){
             throw new UidNotPresentException("This document does not have any meta-data");
-        }
-
-        if (reqUid.equals(uid)){
-            return true;
-        } else {
+        } else if (!reqUid.equals(uid)){
             throw new UidNotFoundException("uid "+uid+ " does not match the requested document" );
         }
+
 
     }
 
