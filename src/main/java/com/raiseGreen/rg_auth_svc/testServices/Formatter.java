@@ -1,14 +1,5 @@
 package com.raiseGreen.rg_auth_svc.testServices;
 
-import com.google.common.collect.ImmutableMap;
-import com.raiseGreen.rg_auth_svc.Tracing;
-import io.dropwizard.Application;
-import io.dropwizard.Configuration;
-import io.dropwizard.setup.Environment;
-import io.opentracing.Scope;
-import io.opentracing.Span;
-import io.opentracing.Tracer;;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +7,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+
+import com.google.common.collect.ImmutableMap;
+import com.raiseGreen.rg_auth_svc.Tracing;
+
+import io.dropwizard.Application;
+import io.dropwizard.Configuration;
+import io.dropwizard.setup.Environment;
+import io.opentracing.Scope;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 public class Formatter extends Application<Configuration> {
     private final Tracer tracer;

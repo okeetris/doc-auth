@@ -5,9 +5,9 @@ metadata:
   name: spring-boot-auth
 data:
   expiration: "1" # Expiration time in minutes
-  apiKey: <API_KEY> # API key of bucket
-  secretKey: <SECRET_KEY> # Secret key of bucket
-  bucketName: <BUCKET_NAME> # Bucket Name
-  endpointURL: <ENDPOINT_URL> # e.g. https://s3.eu-gb.cloud-object-storage.appdomain.cloud
-  location: <LOCATION> # e.g. eu-gb
-  iamEndpoint: <IAMENDPOINT> # e.g. https://iam.cloud.ibm.com/identity/token
+  apiKey: d9d86e587ec147b8b2b63a93071274e0 # API key of bucket
+  secretKey: 917aab7e6550ca1d9ee92b4fed4873109b9444da76823646 # Secret key of bucket
+  bucketName: ix-accelerator-doctore # Bucket Name
+  endpointURL: https://s3.eu-gb.cloud-object-storage.appdomain.cloud # e.g. https://s3.eu-gb.cloud-object-storage.appdomain.cloud
+  location: eu-gb # e.g. eu-gb
+  iamEndpoint: https://iam.cloud.ibm.com/identity/token # e.g. https://iam.cloud.ibm.com/identity/token

@@ -50,13 +50,11 @@ public final class Tracing {
     public static JRETracer initLight(String service) throws Exception {
 
         Options opts = new Options.OptionsBuilder()
-                .withAccessToken("/pVnvH57hjdEqRn1jo18SPen84Y/BgM6nR78T+ikeybJTZpTYPLHKWzFX8Z1bjJonwpF2i94obnqDgRH4gsu3LHSQNw/2pjp4qwnMGTd")
+                .withAccessToken("QngWCZWR0O8qwAXikRD+ZZOb56kmCjoo6aSfLGde9rh9ZlevqX2fwvGMilfLsfvyFzMc+m8Eul2wSGZuAwxnzAAcvJU9Rmtrxcqbrxbg")
                 .withComponentName(service)
                 .build();
 
-        JRETracer tracer = new JRETracer(opts);
-
-        return tracer;
+        return new JRETracer(opts);
     }
 
     public static Span startServerSpan(Tracer tracer, javax.ws.rs.core.HttpHeaders httpHeaders, String operationName) {

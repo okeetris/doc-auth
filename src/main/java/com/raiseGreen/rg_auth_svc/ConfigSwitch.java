@@ -10,6 +10,7 @@ public class ConfigSwitch {
     public static String apiKey;
     public static String secretKey;
 
+
     public static void source(Boolean store) {
 
         if (store) {
@@ -29,5 +30,6 @@ public class ConfigSwitch {
             apiKey = "41ccb967b38d4b97a1c26437ca2dc560";
             secretKey = "0e2775f18559852d60fecdd315045e123ca61a9a1d95b512";
         }
+
     }
 }

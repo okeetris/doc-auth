@@ -35,7 +35,7 @@ spec:
           args:
             - --reporter.grpc.host-port=ingest.lightstep.com:443
             - --reporter.grpc.tls=true
-            - --jaeger.tags=access_token=xbHE2HCGcxI4BBAQT0gIaODyi4/yebQKPosLmolsXzBJw0w0VXQMQYheZHqxSAcVJI2X9wCzAZszjZXganqIAo3rb3yI0F6KeHJEzw87
+            - --jaeger.tags=access_token=QngWCZWR0O8qwAXikRD+ZZOb56kmCjoo6aSfLGde9rh9ZlevqX2fwvGMilfLsfvyFzMc+m8Eul2wSGZuAwxnzAAcvJU9Rmtrxcqbrxbg
         - name: auth-service
           image: uk.icr.io/ix-liberty-rhg/auth-service
           env:
