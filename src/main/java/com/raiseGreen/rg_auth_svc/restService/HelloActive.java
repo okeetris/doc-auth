@@ -40,7 +40,7 @@ public class HelloActive {
             Tags.SPAN_KIND.set(tracer.activeSpan(), Tags.SPAN_KIND_CLIENT);
             Tags.HTTP_METHOD.set(tracer.activeSpan(), "GET");
             Tags.HTTP_URL.set(tracer.activeSpan(), url.toString());
-            tracer.inject(tracer.activeSpan().context(), Format.Builtin.HTTP_HEADERS, new RequestBuilderCarrier(requestBuilder));
+            tracer.inject(tracer.activeSpan().context(), Format.Builtin.HTTP_HEADERS, Tracing.requestBuilderCarrier(requestBuilder));
 
             Request request = requestBuilder.build();
             Response response = client.newCall(request).execute();
